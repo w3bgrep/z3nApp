@@ -1,4 +1,7 @@
-﻿namespace z3nApp
+﻿using z3nApp.ViewModels;
+
+
+namespace z3nApp
 {
     public partial class MainPage : ContentPage
     {
@@ -7,19 +10,18 @@
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new MainViewModel();
         }
-
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void GoToKiller(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            await Shell.Current.GoToAsync("//Killer");
         }
+
+        private async void OnModelOpen(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new ModalWindow());
+        }
+
     }
 
 }

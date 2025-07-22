@@ -8,8 +8,13 @@
     Title="z3nApp">
 
     <ShellContent
-        Title="Home"
+        Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+    <ShellContent
+        Title="Killer"
+        ContentTemplate="{DataTemplate local:Killer}"
+        Route="Killer" />
 
 </Shell>
