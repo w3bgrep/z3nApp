@@ -10,17 +10,17 @@ namespace z3nApp
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainViewModel();
+            BindingContext = new MainViewModel(this);
         }
         private async void GoToKiller(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//Killer");
         }
-
-        private async void OnModelOpen(object sender, EventArgs e)
+        private async void GoToBalances(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new ModalWindow());
+            await Shell.Current.GoToAsync("//Balance");
         }
+
 
     }
 

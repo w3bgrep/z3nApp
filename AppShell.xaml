@@ -17,4 +17,9 @@
         ContentTemplate="{DataTemplate local:Killer}"
         Route="Killer" />
 
+    <ShellContent
+        Title="Balance"
+        ContentTemplate="{DataTemplate local:Balance}"
+        Route="Balance" />
+
 </Shell>

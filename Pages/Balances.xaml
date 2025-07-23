@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="z3nApp.Balances"
+             Title="Balances">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image Source="smalllogo.png" 
+       Aspect="AspectFill" 
+       ZIndex="0"
+       Grid.ColumnSpan="2" />
+
+        <BoxView Color="Black" 
+         Opacity="0.5" 
+         ZIndex="1"
+         Grid.ColumnSpan="2" />
+
+        <StackLayout Grid.Column="0"
+             Padding="20"
+             BackgroundColor="Transparent"
+             ZIndex="2"
+             Spacing="10">
+
+
+            <Label Text="{Binding EthPriceLbl}" 
+               TextColor="White"
+                FontSize="40"
+                FontFamily="Iosevka"/>
+
+            <Entry Text="{Binding Address}"
+               TextColor="White"/>
+
+            <Label Text="{Binding Output}" 
+            TextColor="White"
+            FontSize="40"
+            FontFamily="Iosevka"/>
+
+
+        </StackLayout>
+
+        <!-- Правая колонка: кнопки -->
+        <StackLayout Grid.Column="1"
+             Padding="20"
+             BackgroundColor="Transparent"
+             ZIndex="2"
+             Spacing="10">
+
+            <Button Text="EthPrice"
+                Command="{Binding EthPriceCommand}"
+                Background="#40FFF8E0" 
+                TextColor="Snow"
+                Padding="10"
+                FontSize="20"
+                FontAttributes="Bold"
+                FontFamily="Iosevka"/>
+
+            <Button Text="GetNative"
+                Command="{Binding GetNativeCommand}"
+                Background="#40FFF8E0" 
+                TextColor="Snow"
+                Padding="10"
+                FontSize="20"
+                FontAttributes="Bold"
+                FontFamily="Iosevka"/>
+
+
+            <Button Text="GoBack"
+                    Clicked="GoBack"
+                    Background="#40FFF8E0" 
+                    TextColor="Snow"
+                    Padding="10"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    FontFamily="Iosevka"/>
+
+
+
+        </StackLayout>
+    </Grid>
+
+</ContentPage>

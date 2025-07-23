@@ -65,16 +65,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Killer.xaml">
+	  <MauiXaml Update="Balance.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModalWindow.xaml">
+	  <MauiXaml Update="Pages\Balances.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\" />
+	  <MauiXaml Update="Pages\Killer.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

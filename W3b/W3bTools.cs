@@ -15,6 +15,35 @@ namespace z3nApp
 
     public class EvmTools
     {
+        //public async Task<decimal> GetEvmBalance(string rpc, string address)
+        //{
+        //    string jsonBody = $@"{{ ""jsonrpc"": ""2.0"", ""method"": ""eth_getBalance"", ""params"": [""{address}"", ""latest""], ""id"": 1 }}";
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        var request = new HttpRequestMessage
+        //        {
+        //            Method = System.Net.Http.HttpMethod.Post,
+        //            RequestUri = new Uri(rpc),
+        //            Content = new System.Net.Http.StringContent(jsonBody, Encoding.UTF8, "application/json")
+        //        };
+
+        //        using (var response = await client.SendAsync(request))
+        //        {
+        //            response.EnsureSuccessStatusCode();
+        //            var body = await response.Content.ReadAsStringAsync();
+
+        //            var json = JObject.Parse(body);
+        //            string hexBalance = json["result"]?.ToString().Replace("0x", "") ?? "0";
+
+        //            Console.WriteLine(hexBalance);
+
+        //            BigInteger balanceWei = BigInteger.Parse(hexBalance, NumberStyles.AllowHexSpecifier);
+        //            decimal balance = (decimal)balanceWei / 1000000000000000000m;
+        //            return balance;
+        //        }
+        //    }
+        //}
         public async Task<decimal> GetEvmBalance(string rpc, string address)
         {
             string jsonBody = $@"{{ ""jsonrpc"": ""2.0"", ""method"": ""eth_getBalance"", ""params"": [""{address}"", ""latest""], ""id"": 1 }}";
@@ -23,9 +52,9 @@ namespace z3nApp
             {
                 var request = new HttpRequestMessage
                 {
-                    Method = System.Net.Http.HttpMethod.Post,
+                    Method = HttpMethod.Post,
                     RequestUri = new Uri(rpc),
-                    Content = new System.Net.Http.StringContent(jsonBody, Encoding.UTF8, "application/json")
+                    Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
                 };
 
                 using (var response = await client.SendAsync(request))
@@ -35,13 +64,20 @@ namespace z3nApp
 
                     var json = JObject.Parse(body);
                     string hexBalance = json["result"]?.ToString().Replace("0x", "") ?? "0";
-                    BigInteger balanceWei = BigInteger.Parse(hexBalance, NumberStyles.AllowHexSpecifier);
+
+                    if (string.IsNullOrEmpty(hexBalance) || hexBalance == "0")
+                    {
+                        return 0m;
+                    }
+                    BigInteger balanceWei = BigInteger.Parse("0" + hexBalance, NumberStyles.AllowHexSpecifier);
                     decimal balance = (decimal)balanceWei / 1000000000000000000m;
+
+                    //BigInteger balanceWei = BigInteger.Parse(hexBalance, NumberStyles.AllowHexSpecifier);
+                    //decimal balance = (decimal)balanceWei / 1_000_000_000_000_000_000m;
                     return balance;
                 }
             }
         }
-
         public async Task<decimal> GetErc20Balance(string tokenContract, string rpc, string address, string tokenDecimal = "18")
         {
             string data = "0x70a08231000000000000000000000000" + address.Replace("0x", "");

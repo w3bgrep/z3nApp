@@ -31,14 +31,6 @@
                 FontSize="40"
                 FontFamily="Iosevka"/>
 
-            <Entry Text="{Binding Address}"
-                   TextColor="White"/>
-
-            <Label Text="{Binding Native}" 
-                x:Name="NativeLbl"
-                TextColor="White"
-                FontSize="40"
-                FontFamily="Iosevka"/>
 
 
         </StackLayout>
@@ -50,8 +42,8 @@
                  ZIndex="2"
                  Spacing="10">
             
-            <Button Text="EthPrice"
-                    Command="{Binding EthPriceCommand}"
+            <Button Text="Balance"
+                    Clicked="GoToBalances"
                     Background="#40FFF8E0" 
                     TextColor="Snow"
                     Padding="10"
@@ -59,14 +51,6 @@
                     FontAttributes="Bold"
                     FontFamily="Iosevka"/>
             
-            <Button Text="GetNative"
-                    Command="{Binding GetNativeCommand}"
-                    Background="#40FFF8E0" 
-                    TextColor="Snow"
-                    Padding="10"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    FontFamily="Iosevka"/>
 
             <Button Text="Killer"
                     Clicked="GoToKiller"
@@ -76,16 +60,6 @@
                     FontSize="20"
                     FontAttributes="Bold"
                     FontFamily="Iosevka"/>
-
-            <Button Text="OpenModal"
-                    Clicked="OnModelOpen"
-                    Background="#40FFF8E0" 
-                    TextColor="Snow"
-                    Padding="10"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    FontFamily="Iosevka"/>
-
 
 
         </StackLayout>
