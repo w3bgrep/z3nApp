@@ -26,7 +26,7 @@
                  Spacing="10">
 
 
-            <Label Text="{Binding EthPriceLbl}" 
+            <Label Text="{Binding Output}" 
                TextColor="White"
                 FontSize="40"
                 FontFamily="Iosevka"/>
@@ -54,6 +54,15 @@
 
             <Button Text="Killer"
                     Clicked="GoToKiller"
+                    Background="#40FFF8E0" 
+                    TextColor="Snow"
+                    Padding="10"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    FontFamily="Iosevka"/>
+
+            <Button Text="WalletTools"
+                    Clicked="GoWalletTools"
                     Background="#40FFF8E0" 
                     TextColor="Snow"
                     Padding="10"

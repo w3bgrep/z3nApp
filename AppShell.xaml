@@ -22,4 +22,8 @@
         ContentTemplate="{DataTemplate local:Balance}"
         Route="Balance" />
 
+    <ShellContent
+        Title="WalletTools"
+        ContentTemplate="{DataTemplate local:WalletTools}"
+        Route="WalletTools" />    
 </Shell>

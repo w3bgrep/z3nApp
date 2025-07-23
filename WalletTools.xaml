@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="z3nApp.Balance"
-             Title="Balance">
+             x:Class="z3nApp.WalletTools"
+             Title="WalletTools">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -46,23 +46,23 @@
 
         <Picker x:Name="Rpc"
                 
-                TitleColor="White"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontSize="20"
-                FontFamily="Iosevka"
-                ItemsSource="{Binding RpcOptions}"
-                SelectedItem="{Binding Rpc}"
-                SelectedIndexChanged="OnRpcSelectedIndexChanged">
-       
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            FontFamily="Iosevka"
+            ItemsSource="{Binding ChainTypes}"
+            SelectedItem="{Binding ChainType}"
+            >
+
         </Picker>
 
-        <Label Text="{Binding SelectedRpc}" 
-        TextColor="White"
-        FontSize="20"
-        FontFamily="Iosevka"/>
+            <Label Text="{Binding ChainType}" 
+            TextColor="White"
+            FontSize="20"
+            FontFamily="Iosevka"/>
 
-        <Editor Text="{Binding Address}"
+            <Editor Text="{Binding Address}"
             BackgroundColor="Transparent"
             AutoSize="TextChanges"
             Placeholder="input address or multiple addresses devided by new line or comma"
@@ -79,8 +79,8 @@
          ZIndex="2"
          Spacing="10">
 
-        <Button Text="GetNative"
-            Command="{Binding GetNativeCommand}"
+            <Button Text="GetNative"
+            Command="{Binding GetPrivateKeyCommand}"
             Background="#40FFF8E0" 
             TextColor="Snow"
             Padding="10"
@@ -89,7 +89,7 @@
             FontFamily="Iosevka"/>
 
 
-        <Button Text="GoBack"
+            <Button Text="GoBack"
             Command="{Binding GoBackCommand}"
                 
             Background="#40FFF8E0" 
@@ -99,7 +99,7 @@
             FontAttributes="Bold"
             FontFamily="Iosevka"/>
 
-        <Editor x:Name="ResultEditor"
+            <Editor x:Name="ResultEditor"
             Text="{Binding Output}"
             IsReadOnly="True"
             TextColor="White"
@@ -109,7 +109,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="20"/>
-        <Button Text="Copy"
+            <Button Text="Copy"
             Command="{Binding CopyResultCommand}"
             Background="transparent" 
             TextColor="Gray"

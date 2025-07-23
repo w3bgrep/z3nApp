@@ -13,7 +13,7 @@ namespace z3nApp.ViewModels
         private readonly Page _page;
 
         [ObservableProperty]
-        private string ethPriceLbl = "update";
+        private string ethPrice = null;
         [ObservableProperty]
         private string address = null;
         [ObservableProperty]
@@ -64,16 +64,23 @@ namespace z3nApp.ViewModels
         }
 
         [RelayCommand]
-        private async void EthPrice()
+        private async void GetEthPrice()
         {
-            EthPriceLbl = "Checking...";
+            Output = "Checking...";
             var res = await CoinGecco.CGPrice();
-            EthPriceLbl = res.ToString();
+            Output = res.ToString();
 
         }
         [RelayCommand]
         private async void GetNative()
         {
+            decimal price = 0;
+
+            if (SelectedRpc.Contains("solana"))
+                price = await CoinGecco.CGPrice("solana");
+            else
+                price = await CoinGecco.CGPrice("ethereum");
+
             if (!Address.Contains("\r") && !Address.Contains(","))
             {
                 Debug.WriteLine($"Single address: {Address}");
@@ -83,7 +90,8 @@ namespace z3nApp.ViewModels
                     res = await new SolTools().GetSolanaBalance(SelectedRpc, Address.Trim());
                 else
                     res = await new EvmTools().GetEvmBalance(SelectedRpc, Address.Trim());
-                Output = res.ToString();
+                var inUsd = res * price;
+                Output = $"{Address}\t {res.ToString()}\t {inUsd.ToString("0.00")}$\r";
                 Debug.WriteLine($"Result for single address: {res}");
             }
             else
@@ -117,10 +125,10 @@ namespace z3nApp.ViewModels
                         Debug.WriteLine($"Processing EVM address: {trimmedAddress}");
                         res = await new EvmTools().GetEvmBalance(SelectedRpc, trimmedAddress);
                     }
-                        
+                    var inUsd = res * price;
 
                     //var res = await new EvmTools().GetEvmBalance(SelectedRpc, trimmedAddress);
-                    Output += $"{trimmedAddress}\t {res.ToString()} \r";
+                    Output += $"{trimmedAddress}\t {res.ToString()}\t {inUsd.ToString("0.00")}$\r";
                     Debug.WriteLine($"Result for {trimmedAddress}: {res}");
                 }
                 //await _page.DisplayAlert("Balance", Output, "OK");
@@ -160,9 +168,24 @@ namespace z3nApp.ViewModels
             }
         }
 
+        //WalletTools
 
+        [ObservableProperty]
+        private string chainType = "not set";
+        [ObservableProperty]
+        private ObservableCollection<string> chainTypes = new ObservableCollection<string>
+        {
+            "Evm",
+            "Solana",
+            "Cosmos"
 
+        };
 
+        [RelayCommand]
+        private async void GetPrivateKey()
+        {
+
+        }
 
 
     }

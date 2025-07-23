@@ -20,7 +20,10 @@ namespace z3nApp
         {
             await Shell.Current.GoToAsync("//Balance");
         }
-
+        private async void GoWalletTools(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//WalletTools");
+        }
 
     }
 
