@@ -64,7 +64,6 @@ namespace z3nApp.ViewModels
         }
 
         [RelayCommand]
-
         private async void EthPrice()
         {
             EthPriceLbl = "Checking...";
@@ -80,8 +79,10 @@ namespace z3nApp.ViewModels
                 Debug.WriteLine($"Single address: {Address}");
                 Output = $"Checking by {SelectedRpc}";
                 decimal res = 0;
-
-                res = await new EvmTools().GetEvmBalance(SelectedRpc, Address.Trim());
+                if (SelectedRpc.Contains("solana"))
+                    res = await new SolTools().GetSolanaBalance(SelectedRpc, Address.Trim());
+                else
+                    res = await new EvmTools().GetEvmBalance(SelectedRpc, Address.Trim());
                 Output = res.ToString();
                 Debug.WriteLine($"Result for single address: {res}");
             }
@@ -104,8 +105,21 @@ namespace z3nApp.ViewModels
                 foreach (var address in addresses)
                 {
                     var trimmedAddress = address.Trim();
-                    Debug.WriteLine($"Processing address: {trimmedAddress}");
-                    var res = await new EvmTools().GetEvmBalance(SelectedRpc, trimmedAddress);
+                   
+                    decimal res = 0;
+                    if (SelectedRpc.Contains("solana"))
+                    {
+                        Debug.WriteLine($"Processing SOL address: {trimmedAddress}");
+                        res = await new SolTools().GetSolanaBalance(SelectedRpc, trimmedAddress);
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Processing EVM address: {trimmedAddress}");
+                        res = await new EvmTools().GetEvmBalance(SelectedRpc, trimmedAddress);
+                    }
+                        
+
+                    //var res = await new EvmTools().GetEvmBalance(SelectedRpc, trimmedAddress);
                     Output += $"{trimmedAddress}\t {res.ToString()} \r";
                     Debug.WriteLine($"Result for {trimmedAddress}: {res}");
                 }
@@ -145,6 +159,11 @@ namespace z3nApp.ViewModels
                 await _page.DisplayAlert("Error", "No result to copy!", "OK");
             }
         }
+
+
+
+
+
 
     }
 }
