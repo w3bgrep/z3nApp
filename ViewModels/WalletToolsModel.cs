@@ -48,6 +48,10 @@ namespace z3nApp.ViewModels
 
         [ObservableProperty]
         private string chainType = "not set";
+        
+        [ObservableProperty]
+        private string cosmosChain = "not set";
+        
         [ObservableProperty]
         private string dirrection = null;
 
@@ -57,6 +61,14 @@ namespace z3nApp.ViewModels
             "Evm",
             "Solana",
             "Cosmos"
+
+        };
+        [ObservableProperty]
+        private ObservableCollection<string> cosmosChains = new ObservableCollection<string>
+        {
+            "cosmos",
+            "osmo",
+            "xion"
 
         };
         [ObservableProperty]
@@ -168,10 +180,39 @@ namespace z3nApp.ViewModels
                 }
 
             }
+            else if (type == "Cosmos")
+            {
+                if (output.Contains("seed"))
+                {
+                    try
+                    {
+                        var account = await Task.Run(() => new CosmosTools().AccFromSeed(input, CosmosChain).Result);
+                        seed = input;
+                        key = account[0];
+                        address = account[1];
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        key = input;
+                        address = await Task.Run(() => new CosmosTools().AddressFromKey(key, "cosmos").Result);
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+
+            }
 
 
-
-                string result = "";
+            string result = "";
             switch (output) 
             {
                 case "seed-pk-address":

@@ -47,20 +47,33 @@
 
 
 
-        <Picker 
+            <Picker 
                 
             TitleColor="White"
             TextColor="Black"
             BackgroundColor="White"
             FontSize="20"
             ItemsSource="{Binding ChainTypes}"
-            SelectedItem="{Binding ChainType}"
-            >
-
-        </Picker>
+            SelectedItem="{Binding ChainType}">
+            </Picker>
 
             <Picker 
-                
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding CosmosChains}"
+            SelectedItem="{Binding CosmosChain}"
+            IsVisible="False">
+                        <Picker.Triggers>
+                            <DataTrigger TargetType="Picker" Binding="{Binding ChainType}" Value="Cosmos">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Picker.Triggers>
+            </Picker>
+
+            
+            <Picker 
             TitleColor="White"
             TextColor="Black"
             BackgroundColor="White"

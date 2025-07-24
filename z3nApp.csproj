@@ -64,6 +64,7 @@
 		<PackageReference Include="Nethereum.HdWallet" Version="5.0.0" />
 		<PackageReference Include="Nethereum.Web3" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="NSec.Cryptography" Version="25.4.0" />
 		<PackageReference Include="SimpleBase" Version="5.4.1" />
 		<PackageReference Include="SolnetAll" Version="2.56.2" />
 	</ItemGroup>
