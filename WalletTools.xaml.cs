@@ -6,6 +6,6 @@ public partial class WalletTools : ContentPage
 	public WalletTools()
 	{
 		InitializeComponent();
-        BindingContext = new MainViewModel(this);
+        BindingContext = new WalletToolsModel(this);
     }
 }

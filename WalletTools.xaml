@@ -23,6 +23,9 @@
                 <Style TargetType="Button">
                     <Setter Property="FontFamily" Value="Iosevka" />
                 </Style>
+                <Style TargetType="Picker">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
             </ResourceDictionary>
         </Grid.Resources>
 
@@ -44,25 +47,37 @@
 
 
 
-        <Picker x:Name="Rpc"
+        <Picker 
                 
             TitleColor="White"
             TextColor="Black"
             BackgroundColor="White"
             FontSize="20"
-            FontFamily="Iosevka"
             ItemsSource="{Binding ChainTypes}"
             SelectedItem="{Binding ChainType}"
             >
 
         </Picker>
 
+            <Picker 
+                
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding Dirrections}"
+            SelectedItem="{Binding Dirrection}"
+            >
+
+            </Picker>
+
+
             <Label Text="{Binding ChainType}" 
             TextColor="White"
             FontSize="20"
-            FontFamily="Iosevka"/>
+            />
 
-            <Editor Text="{Binding Address}"
+            <Editor Text="{Binding InputEdit}"
             BackgroundColor="Transparent"
             AutoSize="TextChanges"
             Placeholder="input address or multiple addresses devided by new line or comma"
@@ -79,14 +94,14 @@
          ZIndex="2"
          Spacing="10">
 
-            <Button Text="GetNative"
-            Command="{Binding GetPrivateKeyCommand}"
+            <Button Text="Process"
+            Command="{Binding PrivateFromSeedCommand}"
             Background="#40FFF8E0" 
             TextColor="Snow"
             Padding="10"
             FontSize="20"
             FontAttributes="Bold"
-            FontFamily="Iosevka"/>
+            />
 
 
             <Button Text="GoBack"
@@ -97,14 +112,14 @@
             Padding="10"
             FontSize="20"
             FontAttributes="Bold"
-            FontFamily="Iosevka"/>
+            />
 
             <Editor x:Name="ResultEditor"
             Text="{Binding Output}"
             IsReadOnly="True"
             TextColor="White"
             BackgroundColor="Transparent"
-            FontSize="16"
+            FontSize="12"
             AutoSize="TextChanges"
             Grid.Column="0"
             Grid.ColumnSpan="2"

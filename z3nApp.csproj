@@ -61,7 +61,11 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Nethereum.HdWallet" Version="5.0.0" />
+		<PackageReference Include="Nethereum.Web3" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="SimpleBase" Version="5.4.1" />
+		<PackageReference Include="SolnetAll" Version="2.56.2" />
 	</ItemGroup>
 
 	<ItemGroup>

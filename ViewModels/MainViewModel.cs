@@ -13,6 +13,9 @@ namespace z3nApp.ViewModels
         private readonly Page _page;
 
         [ObservableProperty]
+        private string inputEdit = null;
+
+        [ObservableProperty]
         private string ethPrice = null;
         [ObservableProperty]
         private string address = null;
@@ -182,9 +185,14 @@ namespace z3nApp.ViewModels
         };
 
         [RelayCommand]
-        private async void GetPrivateKey()
+        private async Task PrivateFromSeed()
         {
-
+            string seed = InputEdit;
+            Debug.WriteLine("Seed: " + seed);
+            string key = await Task.Run(() => new SolTools().KeyFromSeed(seed).Result);
+            string address = await Task.Run(() => new SolTools().AddressFromKey(key).Result);
+            Debug.WriteLine("Key: " + key);
+            Output = key + "\n" + address;
         }
 
 
