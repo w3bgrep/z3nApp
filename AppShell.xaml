@@ -25,5 +25,15 @@
     <ShellContent
         Title="WalletTools"
         ContentTemplate="{DataTemplate local:WalletTools}"
-        Route="WalletTools" />    
+        Route="WalletTools" />
+
+    <ShellContent
+        Title="DbManager"
+        ContentTemplate="{DataTemplate local:DbManager}"
+        Route="DbManager" />
+
+    <ShellContent
+        Title="ToDo"
+        ContentTemplate="{DataTemplate local:ToDo}"
+        Route="ToDo" />
 </Shell>

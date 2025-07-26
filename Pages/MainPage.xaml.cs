@@ -24,7 +24,14 @@ namespace z3nApp
         {
             await Shell.Current.GoToAsync("//WalletTools");
         }
-
+        private async void GoDbManager(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//DbManager");
+        }
+        private async void GoToDo(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//ToDo");
+        }
     }
 
 }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="z3nApp.DbManager"
+             Title="DbManager">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Label">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Entry">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Editor">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Picker">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Image Source="smalllogo.png" 
+           Aspect="AspectFill" 
+           ZIndex="0"
+           Grid.ColumnSpan="2" />
+
+        <BoxView Color="Black" 
+         Opacity="0.5" 
+         ZIndex="1"
+         Grid.ColumnSpan="2" />
+
+        <StackLayout Grid.Column="0"
+         Padding="20"
+         BackgroundColor="Transparent"
+         ZIndex="2"
+         Spacing="10">
+
+
+        <Picker 
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding ImportTypes}"
+            SelectedItem="{Binding ImportType}">
+        </Picker>
+
+        <Picker 
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding Operations}"
+            SelectedItem="{Binding Operation}"
+            IsVisible="False">
+            <Picker.Triggers>
+                <DataTrigger TargetType="Picker" Binding="{Binding ImportType}" Value="Cosmos">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Picker.Triggers>
+        </Picker>
+
+        <Label Text="{Binding Operation}" 
+            TextColor="White"
+            FontSize="20"/>
+
+        <CollectionView ItemsSource="{Binding Operations}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="5">
+                        <Label Text="{Binding Id}" TextColor="White" ></Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Editor Text="{Binding InputEdit}"
+            BackgroundColor="Transparent"
+            AutoSize="TextChanges"
+            Placeholder="input address or multiple addresses devided by new line or comma"
+            PlaceholderColor="Gray"
+            TextColor="White"/>
+
+
+        </StackLayout>
+
+        <!-- Правая колонка: кнопки -->
+        <StackLayout Grid.Column="1"
+             Padding="20"
+             BackgroundColor="Transparent"
+             ZIndex="2"
+             Spacing="10">
+
+        <Button Text="Process"
+            Command="{Binding PrivateFromSeedCommand}"
+            Background="#40FFF8E0" 
+            TextColor="Snow"
+            Padding="10"
+            FontSize="20"
+            FontAttributes="Bold"
+            />
+
+
+        <Button Text="GoBack" Command="{Binding  GoBackCommand}"      
+            Background="#40FFF8E0" 
+            TextColor="Snow"
+            Padding="10"
+            FontSize="20"
+            FontAttributes="Bold"
+            />
+
+        <Editor x:Name="ResultEditor"
+            Text="{Binding Output}"
+            IsReadOnly="True"
+            TextColor="White"
+            BackgroundColor="Transparent"
+            FontSize="12"
+            AutoSize="TextChanges"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="20"/>
+        <Button Text="Copy"
+            Command="{Binding CopyResultCommand}"
+            Background="transparent" 
+            TextColor="Gray"
+            FontSize="10"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="End"/>
+
+
+        </StackLayout>
+    </Grid>
+</ContentPage>

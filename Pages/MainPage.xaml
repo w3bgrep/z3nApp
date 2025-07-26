@@ -69,7 +69,22 @@
                     FontSize="20"
                     FontAttributes="Bold"
                     FontFamily="Iosevka"/>
-
+            <Button Text="DbManager"
+                    Clicked="GoDbManager"
+                    Background="#40FFF8E0" 
+                    TextColor="Snow"
+                    Padding="10"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    FontFamily="Iosevka"/>
+            <Button Text="ToDoList"
+                    Clicked="GoToDo"
+                    Background="#40FFF8E0" 
+                    TextColor="Snow"
+                    Padding="10"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    FontFamily="Iosevka"/>
 
         </StackLayout>
     </Grid>

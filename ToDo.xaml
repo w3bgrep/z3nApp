@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:z3nApp.ViewModels"
+             x:Class="z3nApp.ToDo"
+             Title="ToDo">
+    <StackLayout>
+        <Label 
+            Text="ToDo"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+
+        <Entry Placeholder="Input Task" Text="{Binding NewTaskTitle, Mode=TwoWay}"/>
+        <Button Text="Add" Command="{Binding AddItemCommand}"/>
+
+        <CollectionView ItemsSource="{Binding TodoItems}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Title}" FontSize="18" VerticalOptions="Center"></Label>
+                        <Button Text="X" Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoModel}}, Path=DeleteItemCommand}" CommandParameter="{Binding .}"/>
+                    </StackLayout>
+                </DataTemplate>
+                   
+                    
+            </CollectionView.ItemTemplate>
+            
+            
+        </CollectionView>
+
+        <Button Text="GoBack"
+            Command="{Binding GoBackCommand}"
+                
+            Background="#40FFF8E0" 
+            TextColor="Snow"
+            Padding="10"
+            FontSize="20"
+            FontAttributes="Bold"
+            FontFamily="Iosevka"/>
+    </StackLayout>
+</ContentPage>

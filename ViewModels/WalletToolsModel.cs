@@ -11,6 +11,10 @@ namespace z3nApp.ViewModels
     public partial class WalletToolsModel : ObservableObject
     {
         //DEFAULT_SET
+        public WalletToolsModel(Page page)
+        {
+            _page = page; // Сохраняем страницу
+        }
         private readonly Page _page;
         [ObservableProperty]
         private string inputEdit = null;
@@ -26,10 +30,7 @@ namespace z3nApp.ViewModels
         {
             await Shell.Current.GoToAsync("//MainPage");
         }
-        public WalletToolsModel(Page page)
-        {
-            _page = page; // Сохраняем страницу
-        }
+
         [RelayCommand]
         private async Task CopyResult()
         {
@@ -44,7 +45,6 @@ namespace z3nApp.ViewModels
             }
         }
         //OTHER
-
 
         [ObservableProperty]
         private string chainType = "not set";
