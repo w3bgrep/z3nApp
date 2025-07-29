@@ -51,8 +51,9 @@
             TextColor="Black"
             BackgroundColor="White"
             FontSize="20"
-            ItemsSource="{Binding ImportTypes}"
-            SelectedItem="{Binding ImportType}">
+            ItemsSource="{Binding Operations}"
+            SelectedItem="{Binding Operation}"
+            >
         </Picker>
 
         <Picker 
@@ -60,17 +61,22 @@
             TextColor="Black"
             BackgroundColor="White"
             FontSize="20"
-            ItemsSource="{Binding Operations}"
-            SelectedItem="{Binding Operation}"
+            ItemsSource="{Binding ImportTypes}"
+            SelectedItem="{Binding ImportType}"
+            SelectedIndexChanged="TablePicked"
             IsVisible="False">
             <Picker.Triggers>
-                <DataTrigger TargetType="Picker" Binding="{Binding ImportType}" Value="Cosmos">
+                <DataTrigger TargetType="Picker" Binding="{Binding Operation}" Value="import">
                     <Setter Property="IsVisible" Value="True" />
                 </DataTrigger>
-            </Picker.Triggers>
-        </Picker>
+                <DataTrigger TargetType="Picker" Binding="{Binding Operation}" Value="update">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+                </Picker.Triggers>
+             
+            </Picker>
 
-        <Label Text="{Binding Operation}" 
+        <Label Text="{Binding OperationInfo}" 
             TextColor="White"
             FontSize="20"/>
 
@@ -102,7 +108,7 @@
              Spacing="10">
 
         <Button Text="Process"
-            Command="{Binding PrivateFromSeedCommand}"
+            Command="{Binding ProcessCommand}"
             Background="#40FFF8E0" 
             TextColor="Snow"
             Padding="10"

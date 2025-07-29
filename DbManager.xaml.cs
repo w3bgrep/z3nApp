@@ -7,4 +7,11 @@ public partial class DbManager : ContentPage
 		InitializeComponent();
         BindingContext = new DbManagerModel(this);
     }
+
+    private void TablePicked(object sender, EventArgs e)
+    {
+        var viewModel = (DbManagerModel)BindingContext;
+        new Sql(viewModel.ImportType);
+        viewModel.setInfo();
+    }
 }

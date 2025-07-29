@@ -14,8 +14,7 @@ namespace z3nApp.ViewModels
         public DbManagerModel(Page page)
         {
             _page = page; // Сохраняем страницу
-            _database = new Sql();
-            LoadWallets();
+            _database = new Sql();          
         }
         private readonly Page _page;
         [ObservableProperty]
@@ -45,14 +44,16 @@ namespace z3nApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> importTypes = new ObservableCollection<string>
         {
+            "Addresses",
             "Wallets",
-            "Proxys",
-            "Twitters",
-            "Discords",
-            "Googles",
-            "GitHubs",
+            "Proxy",
+            "Twitter",
+            "Discord",
+            "Google",
+            "GitHub",
             "Native",
             "Balance",
+            "Mail",
         };
 
         [ObservableProperty]
@@ -62,23 +63,38 @@ namespace z3nApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> operations = new ObservableCollection<string>
         {
+            "read",
+            "import",
             "update",
-            "create&fill",
+            "show",
+
         };
 
         [ObservableProperty]
         private string operation = null;
 
         [ObservableProperty]
-        private ObservableCollection<Wallets> allWallets;
+        private string operationInfo = null;
+
+        internal void setInfo()
+        {
+            switch (Operation)
+            {
+                case "import":
+                    OperationInfo = "import multiple accounts";
+                    return;
+                default:
+                    return;
+            }
+        }
+
+
+
 
         [RelayCommand]
-        private async void LoadWallets()
+        private async Task Process()
         {
-            var wallets = await _database.GetWallets();
-            AllWallets = new ObservableCollection<Wallets>();
-
-
+            new Sql(ImportType.ToLower());
         }
 
     }

@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Dapper" Version="2.1.66" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
@@ -68,6 +70,7 @@
 		<PackageReference Include="SimpleBase" Version="5.4.1" />
 		<PackageReference Include="SolnetAll" Version="2.56.2" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="System.Management" Version="9.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -92,7 +95,7 @@
 	  <MauiXaml Update="DbManager.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ToDo.xaml">
+	  <MauiXaml Update="Pages\ToDo.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:z3nApp.ViewModels"
+             x:Class="z3nApp.ToDo"
+             Title="ToDo">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Label">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Entry">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Editor">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+                <Style TargetType="Picker">
+                    <Setter Property="FontFamily" Value="Iosevka" />
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Image Source="smalllogo.png" 
+            Aspect="AspectFill" 
+            ZIndex="0"
+            Grid.ColumnSpan="2" />
+
+        <BoxView Color="Black" 
+          Opacity="0.5" 
+          ZIndex="1"
+          Grid.ColumnSpan="2" />
+
+        <StackLayout Grid.Column="0"
+          Padding="20"
+          BackgroundColor="Transparent"
+          ZIndex="2"
+          Spacing="10">
+
+
+
+
+          <Editor Placeholder="Input Task" Text="{Binding NewTaskTitle, Mode=TwoWay}"
+         BackgroundColor="Transparent"
+         AutoSize="TextChanges"
+         PlaceholderColor="Gray"
+         TextColor="White"/>
+
+        <CollectionView ItemsSource="{Binding TodoItems}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" ZIndex="3">
+                        <Label Text="{Binding Title}" FontSize="18" VerticalOptions="Center" TextColor="Snow"  BackgroundColor="Transparent" ZIndex="3"></Label>
+                            <Button Text=" 🗑️" VerticalOptions="Center"  BackgroundColor="Transparent" TextColor="Snow"  Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoModel}}, Path=DeleteItemCommand}" CommandParameter="{Binding .} "/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        </StackLayout>
+
+        <!-- Правая колонка: кнопки -->
+        <StackLayout Grid.Column="1"
+      Padding="20"
+      BackgroundColor="Transparent"
+      ZIndex="2"
+      Spacing="10">
+
+            <Button Text="Add"
+         Command="{Binding AddItemCommand}"
+         Background="#40FFF8E0" 
+         TextColor="Snow"
+         Padding="10"
+         FontSize="20"
+         FontAttributes="Bold"
+         />
+
+
+            <Button Text="GoBack"
+         Command="{Binding GoBackCommand}"
+             
+         Background="#40FFF8E0" 
+         TextColor="Snow"
+         Padding="10"
+         FontSize="20"
+         FontAttributes="Bold"
+         />
+            
+            
+
+
+
+
+            <Button Text="Copy"
+         Command="{Binding CopyResultCommand}"
+         Background="transparent" 
+         TextColor="Gray"
+         FontSize="10"
+         Grid.Column="0"
+         Grid.ColumnSpan="2"
+         HorizontalOptions="End"/>
+
+
+        </StackLayout>
+    </Grid>
+
+
+
+
+
+
+
+
+</ContentPage>
