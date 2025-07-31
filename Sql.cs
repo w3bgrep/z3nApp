@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
+using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using static SQLite.TableMapping;
@@ -11,16 +12,17 @@ namespace z3nApp
     {
         private readonly SqliteConnection _connection;
         private readonly string _tableName;
-        public Sql()
+        private readonly Logger _logger;
+        public Sql(bool log = false)
         {
             string path = Path.Combine(FileSystem.AppDataDirectory, "default.db");
             Debug.WriteLine(path);
             _connection = new SqliteConnection($"Data Source={path}");
             _connection.Open();
-
+            _logger = new Logger(log);
         }
 
-        public Sql(string tableName = "")
+        public Sql(string tableName, bool log = false )
         {
             string path = Path.Combine(FileSystem.AppDataDirectory, "default.db");
             Debug.WriteLine(path);
@@ -35,15 +37,10 @@ namespace z3nApp
             return await _connection.ExecuteAsync(rawQuery);
         }
 
-        //public async Task<string> Get(string columns, string acc)
-        //{
-
-        //    string query = $"SELECT {columns} FROM TableName WHERE acc = @acc";
-        //    return await _connection.ExecuteScalarAsync<string>(query, new { acc });
-        //}
 
         public async Task<int> Upd(string toUpd, object id, string tableName = null, string where = null, bool last = false)
         {
+            _logger.Send(toUpd);
             var parameters = new DynamicParameters();
             if (tableName == null) tableName = _tableName;
             if (tableName == null) throw new Exception("TableName is null");
@@ -60,8 +57,8 @@ namespace z3nApp
             string query;
             if (string.IsNullOrEmpty(where))
             {
-                query = $"UPDATE {tableName} SET {toUpd} WHERE id = @id";
-                parameters.Add("id", $"{id}");
+                query = $"UPDATE {tableName} SET {toUpd} WHERE id = {id}";
+               
             }
             else
             {
@@ -74,7 +71,15 @@ namespace z3nApp
             }
             catch (Exception ex)
             {
+                string formattedQuery = query;
+                foreach (var param in parameters.ParameterNames)
+                {
+                    var value = parameters.Get<dynamic>(param)?.ToString() ?? "NULL";
+                    formattedQuery = formattedQuery.Replace($"@{param}", $"'{value}'");
+                }
+
                 Debug.WriteLine($"Error: {ex.Message}");
+                Debug.WriteLine($"Executed query: {formattedQuery}");
                 throw;
             }
         }
@@ -88,53 +93,7 @@ namespace z3nApp
             }
         }
   
-        public async Task<int> UpdAES(string column, string item, object id, string pin, string tableName = null, string where = null)
-        {
-            var parameters = new DynamicParameters();
-            if (tableName == null) tableName = _tableName;
-            if (tableName == null) throw new Exception("TableName is null");
 
-            column = QuoteName(column, true);
-            tableName = QuoteName(tableName);
-            SAFU safu = new SAFU(pin);
-            safu.id = id.ToString();
-            string encodedItem = safu.Encode(item);
-
-            string query;
-            if (string.IsNullOrEmpty(where))
-            {
-                query = $"UPDATE {tableName} SET {column} = @item WHERE id = @id";
-                parameters.Add("item", $"{item}");
-                parameters.Add("id", $"{id}");
-            }
-            else
-            {
-                query = $"UPDATE {tableName} SET {column} = @item WHERE {where}";
-                parameters.Add("item", $"{item}");
-            }
-
-            try
-            {
-                return await _connection.ExecuteAsync(query, parameters, commandType: System.Data.CommandType.Text);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error: {ex.Message}");
-                throw;
-            }
-        }
-        public async Task UpdAES(string column, List<string> items, string pin, string tableName = null, string where = null)
-        {
-            SAFU safu = new SAFU(pin);
-            int id = 0;
-            foreach (var item in items)
-            {
-                safu.id = id.ToString();
-                string encodedItem = safu.Encode(item);
-                await UpdAES(column, item, id, pin, tableName, where);
-                id++;
-            }
-        }
    
         public async Task<string> Get(string toGet, string id, string tableName = null, string where = null)
         {
@@ -168,8 +127,22 @@ namespace z3nApp
                 throw;
             }
         }
-        
-        
+
+        public async Task AddRange(int range, string tableName = null)
+        {
+            if (tableName == null) tableName = _tableName;
+            if (tableName == null) throw new Exception("TableName is null");
+
+            string query = $@"SELECT COALESCE(MAX(id), 0) FROM {tableName};";
+
+            int current = await _connection.ExecuteScalarAsync<int>(query, commandType: System.Data.CommandType.Text);
+            _logger.Send($"{query}-{current}");
+            
+            for (int currentId = current + 1; currentId <= range; currentId++)
+            {
+                _connection.ExecuteAsync($@"INSERT INTO {tableName} (id) VALUES ({currentId}) ON CONFLICT DO NOTHING;");
+            }
+        }
         
         
         

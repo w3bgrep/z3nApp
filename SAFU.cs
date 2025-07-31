@@ -9,12 +9,6 @@ using System.Text;
 namespace z3nApp
 {
 
-    public static class FunctionStorage
-    {
-        public static ConcurrentDictionary<string, object> Functions = new ConcurrentDictionary<string, object>();
-    }
-
-
     public class SAFU
     {
         public string id { get; set; }
@@ -25,86 +19,72 @@ namespace z3nApp
         {
             _cfgPin = cfgPin;
             _hwId = GetHWId();
-            RegisterFunctions();
-
         }
 
-        public string Encode(string input)
+
+
+        public string Encode(string toEncrypt, string currentId)
         {
-            var encodeFunc = FunctionStorage.Functions["SAFU_Encode"] as Func<string, string>;
-            return encodeFunc?.Invoke(input) ?? string.Empty;
+            id = currentId;
+            if (string.IsNullOrEmpty(toEncrypt))
+            {
+                Debug.WriteLine("Encode: Input string is empty");
+                return string.Empty;
+            }
+            string combinedKey = _hwId + _cfgPin + id;
+            Debug.WriteLine("Encode: Generating key for encryption");
+            try
+            {
+                return AES.EncryptAES(toEncrypt, combinedKey, true);
+            }
+            catch (Exception ex)
+            {
+                new Logger(true).Send($"W [{ex.Message}]");
+                return null;
+            }
         }
 
-        public string Decode(string input)
+        public string Decode(string toDecrypt, string currentId)
         {
-            var decodeFunc = FunctionStorage.Functions["SAFU_Decode"] as Func<string, string>;
-            return decodeFunc?.Invoke(input) ?? string.Empty;
+            id = currentId;
+            if (string.IsNullOrEmpty(toDecrypt))
+            {
+                Debug.WriteLine("Decode: Input string is empty");
+                return string.Empty;
+            }
+            string combinedKey = _hwId + _cfgPin + id;
+            Debug.WriteLine("Decode: Generating key for decryption");
+            return AES.DecryptAES(toDecrypt, combinedKey, true);
         }
-
         public string HWPass()
         {
-            var hwPassFunc = FunctionStorage.Functions["SAFU_HWPass"] as Func<string>;
-            return hwPassFunc?.Invoke() ?? string.Empty;
+            string comboInput = _hwId + _cfgPin + id;
+            Debug.WriteLine("HWPass: Generating password hash");
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(comboInput));
+                string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+
+                StringBuilder password = new StringBuilder();
+                string lowerChars = "abcdefghijklmnopqrstuvwxyz";
+                string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                string digits = "0123456789";
+                string specialChars = "!@#$%^&*()";
+
+                for (int i = 0; i < 20; i++)
+                {
+                    int index = Convert.ToInt32(hash.Substring(i * 2, 2), 16);
+                    char c;
+                    if (i % 4 == 0) c = lowerChars[index % 26];
+                    else if (i % 4 == 1) c = upperChars[index % 26];
+                    else if (i % 4 == 2) c = digits[index % 10];
+                    else c = specialChars[index % 10];
+                    password.Append(c);
+                }
+                return password.ToString();
+            }
         }
 
-        public void RegisterFunctions()
-        {
-            var encodeFunc = new Func<string, string>((toEncrypt) =>
-            {
-                if (string.IsNullOrEmpty(toEncrypt))
-                {
-                    Debug.WriteLine("Encode: Input string is empty");
-                    return string.Empty;
-                }
-                string combinedKey = _hwId + _cfgPin + _id;
-                Debug.WriteLine("Encode: Generating key for encryption");
-                return AES.EncryptAES(toEncrypt, combinedKey, true);
-            });
-            FunctionStorage.Functions.AddOrUpdate("SAFU_Encode", encodeFunc, (key, oldValue) => encodeFunc);
-
-            var decodeFunc = new Func<string, string>((toDecrypt) =>
-            {
-                if (string.IsNullOrEmpty(toDecrypt))
-                {
-                    Debug.WriteLine("Decode: Input string is empty");
-                    return string.Empty;
-                }
-                string combinedKey = _hwId + _cfgPin + _id;
-                Debug.WriteLine("Decode: Generating key for decryption");
-                return AES.DecryptAES(toDecrypt, combinedKey, true);
-            });
-            FunctionStorage.Functions.AddOrUpdate("SAFU_Decode", decodeFunc, (key, oldValue) => decodeFunc);
-
-            var hwPassFunc = new Func<string>(() =>
-            {
-                string comboInput = _hwId + _id + _cfgPin;
-                Debug.WriteLine("HWPass: Generating password hash");
-                using (var sha256 = SHA256.Create())
-                {
-                    byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(comboInput));
-                    string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-
-                    StringBuilder password = new StringBuilder();
-                    string lowerChars = "abcdefghijklmnopqrstuvwxyz";
-                    string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    string digits = "0123456789";
-                    string specialChars = "!@#$%^&*()";
-
-                    for (int i = 0; i < 20; i++)
-                    {
-                        int index = Convert.ToInt32(hash.Substring(i * 2, 2), 16);
-                        char c;
-                        if (i % 4 == 0) c = lowerChars[index % 26];
-                        else if (i % 4 == 1) c = upperChars[index % 26];
-                        else if (i % 4 == 2) c = digits[index % 10];
-                        else c = specialChars[index % 10];
-                        password.Append(c);
-                    }
-                    return password.ToString();
-                }
-            });
-            FunctionStorage.Functions.AddOrUpdate("SAFU_HWPass", hwPassFunc, (key, oldValue) => hwPassFunc);
-        }
 
         private string GetHWId()
         {

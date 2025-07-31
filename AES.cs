@@ -9,7 +9,11 @@ namespace z3nApp
         public static string EncryptAES(string phrase, string key, bool hashKey = true)
         {
             if (phrase == null || key == null)
+            {
+                new Logger().Send("`W null input");
                 return null;
+            }
+
 
             var keyArray = HexStringToByteArray(hashKey ? HashMD5(key) : key);
             var toEncryptArray = Encoding.UTF8.GetBytes(phrase);
@@ -31,7 +35,10 @@ namespace z3nApp
         public static string DecryptAES(string hash, string key, bool hashKey = true)
         {
             if (hash == null || key == null)
+            {
+                new Logger().Send("`W null input");
                 return null;
+            }
 
             var keyArray = HexStringToByteArray(hashKey ? HashMD5(key) : key);
             var toEncryptArray = HexStringToByteArray(hash);

@@ -76,7 +76,66 @@
              
             </Picker>
 
-        <Label Text="{Binding OperationInfo}" 
+
+            <Picker 
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding WalletTypes}"
+            SelectedItem="{Binding WalletType}"
+            IsVisible="False">
+                <Picker.Triggers>
+                    <DataTrigger TargetType="Picker" Binding="{Binding ImportType}" Value="wallets">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Picker.Triggers>
+
+            </Picker>
+
+            <Picker 
+            TitleColor="White"
+            TextColor="Black"
+            BackgroundColor="White"
+            FontSize="20"
+            ItemsSource="{Binding AddressTypes}"
+            SelectedItem="{Binding AddressType}"
+            IsVisible="False">
+                <Picker.Triggers>
+                    <DataTrigger TargetType="Picker" Binding="{Binding ImportType}" Value="addresses">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Picker.Triggers>
+            </Picker>
+
+
+            <Editor Text="{Binding SocialMask}"
+            BackgroundColor="Transparent"
+            AutoSize="TextChanges"
+            Placeholder="input parsing mask"
+            PlaceholderColor="Gray"
+            TextColor="White"
+            IsVisible="False">
+                <Editor.Triggers>
+                    <DataTrigger TargetType="Editor" Binding="{Binding ImportType}" Value="twitter">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Editor" Binding="{Binding ImportType}" Value="discord">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Editor" Binding="{Binding ImportType}" Value="google">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Editor" Binding="{Binding ImportType}" Value="github">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Editor.Triggers>
+            </Editor>
+
+
+
+
+                <Label Text="{Binding OperationInfo}" 
             TextColor="White"
             FontSize="20"/>
 
